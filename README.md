@@ -9,7 +9,7 @@ What's here 
 
 **simulations.py** — runs SimNIBS TMS simulations for all 5 subjects at coil-to-scalp distances from 4 to 40 mm (1 mm steps). Uses MagVenture Cool-B65 coil, F3 target with previously individually defined coordinates.
 
-**roi_mask_and_analysis.py** — defines a fixed ROI within the 4 mm baseline simulation as a 10 mm diameter sphere limited to GM mask, center at the the peak E voxel. This ROI is applied to all distances. Then the field parameters (min, mean, median, P98, P99, max) within the fised ROI and globally across GM are extracted, the focality is taken from the SimNIBS logs. MSO scaling factors and normalized focality are calculated relative to the 4 mm baseline. Output - one Excel file with one sheet per subject + summary.
+**roi_mask_and_analysis.py** — defines a fixed ROI within the 4 mm baseline simulation as a 10 mm diameter sphere limited to GM mask, center at the peak E voxel. This ROI is applied to all distances. Then the field parameters (min, mean, median, P98, P99, max) within the fixed ROI and globally across GM are extracted, the focality is taken from the SimNIBS logs. MSO scaling factors and normalized focality are calculated relative to the 4 mm baseline. Output - one Excel file with one sheet per subject + summary.
 
 (ROI quality check (confirming peak location matches stimulation site) was performed separately — MNI coordinates of peak voxels are available on request.)
 
