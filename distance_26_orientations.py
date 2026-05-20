@@ -25,6 +25,6 @@ for i in range(26):
     for j in range(8):
         d = abs(acq[s + j][0] - ref_x)
         displacements.append(d)
-        print(f"Group {i+1}, orientation {j*45}°: {d:.4f} mm")
-    print(f"Mean: {np.mean(displacements):.4f} mm")
-    print(f"SD:   {np.std(displacements):.4f} mm\n")
+        print(f"Group {i+1}, orientation {j*45}°: {d:.10f} mm")
+    print(f"Mean: {np.mean(displacements):.10f} mm")
+    print(f"SD:   {np.std(displacements):.10f} mm\n")
