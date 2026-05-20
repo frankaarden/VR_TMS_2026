@@ -20,7 +20,7 @@ subjects = [
 
 distances       = list(range(4, 41))
 roi_diameter_mm = 10
-
+# identifies the gray matter (GM) nii.gz of the headmodel, if not found searches for compartment 2 (GM) in the final tissues
 def load_gm_mask(m2m_path, target_affine, target_shape):
     def to_bool(nii_obj):
         data = nii_obj.get_fdata()
@@ -43,7 +43,7 @@ def load_gm_mask(m2m_path, target_affine, target_shape):
         return to_bool(nib.Nifti1Image((data == 2).astype(np.float32), nii.affine))
     print(f"no GM mask found in {m2m_path}")
     return None
-
+# builds a spherical roi mask around the peak E element in the GM, limits it to GM
 def build_roi(magnE_file, gm_mask, diameter_mm=roi_diameter_mm):
     nii  = nib.load(str(magnE_file))
     data = nii.get_fdata()
@@ -56,7 +56,7 @@ def build_roi(magnE_file, gm_mask, diameter_mm=roi_diameter_mm):
     sphere = np.sqrt((x-peak_vox[0])**2 + (y-peak_vox[1])**2 + (z-peak_vox[2])**2) <= r
     roi = sphere & gm_mask if gm_mask is not None else sphere
     return roi, peak_vox
-
+# exports the field valus from the defined roi
 def field_stats(arr):
     if len(arr) == 0:
         return {'min': 0, 'mean': 0, 'median': 0, 'p98': 0, 'p99': 0, 'max': 0}
@@ -68,7 +68,7 @@ def field_stats(arr):
         'p99':    np.percentile(arr, 99),
         'max':    np.max(arr)
     }
-
+# exports the focality values from the simulation log files
 def get_focality(log_file):
     try:
         content = Path(log_file).read_text()
@@ -78,7 +78,7 @@ def get_focality(log_file):
     except Exception as e:
         print(f"  log warning: {e}")
     return None, None
-
+# identifies the reference (4mm) simulation, builds the roi
 def analyze_subject(sub):
     sub_id      = sub['id']
     output_base = sub['output_base']
@@ -96,7 +96,7 @@ def analyze_subject(sub):
     print(f"  ROI: {int(np.sum(roi))} GM voxels, peak={peak_vox}")
 
     results, ref_params = [], None
-
+# identifies the relevant values in all simulations and exports them into excel
     for d in distances:
         magnE = list((output_base / f"distance_{d}mm").glob("subject_volumes/*_magnE.nii.gz"))
         logs  = list((output_base / f"distance_{d}mm").glob("*.log"))
@@ -144,7 +144,7 @@ def analyze_subject(sub):
 
     if not results:
         return None
-
+# determines the mso increase factor and the degree of focality increase in comparison to the reference simulation values
     df = pd.DataFrame(results)
     if ref_params:
         for col, ref_val in ref_params.items():
