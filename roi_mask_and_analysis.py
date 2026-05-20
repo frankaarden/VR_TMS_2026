@@ -78,13 +78,13 @@ def get_focality(log_file):
     except Exception as e:
         print(f"  log warning: {e}")
     return None, None
-# identifies the reference (4mm) simulation, builds the roi
+
 def analyze_subject(sub):
     sub_id      = sub['id']
     output_base = sub['output_base']
     m2m_path    = sub['m2m_path']
     print(f"\n{sub_id}")
-
+    # identifies the reference (4mm) simulation, builds the roi
     ref_magnE = list((output_base / "distance_4mm").glob("subject_volumes/*_magnE.nii.gz"))
     if not ref_magnE:
         print("  4mm simulation not found")
@@ -96,7 +96,7 @@ def analyze_subject(sub):
     print(f"  ROI: {int(np.sum(roi))} GM voxels, peak={peak_vox}")
 
     results, ref_params = [], None
-# identifies the relevant values in all simulations and exports them into excel
+    # identifies field values and focality in all simulations
     for d in distances:
         magnE = list((output_base / f"distance_{d}mm").glob("subject_volumes/*_magnE.nii.gz"))
         logs  = list((output_base / f"distance_{d}mm").glob("*.log"))
@@ -144,7 +144,7 @@ def analyze_subject(sub):
 
     if not results:
         return None
-# determines the mso increase factor and the degree of focality increase in comparison to the reference simulation values
+    # determines the mso increase factor and the degree of focality increase in comparison to the reference simulation values
     df = pd.DataFrame(results)
     if ref_params:
         for col, ref_val in ref_params.items():
