@@ -11,12 +11,29 @@ What's here 
 
 **roi_mask_and_analysis.py** — defines a fixed ROI within the 4 mm baseline simulation as a 10 mm diameter sphere limited to GM mask, center at the peak E voxel. This ROI is applied to all distances. Then the field parameters (min, mean, median, P98, P99, max) within the fixed ROI and globally across GM are extracted, the focality is taken from the SimNIBS logs. MSO scaling factors and normalized focality are calculated relative to the 4 mm baseline. Output - one Excel file with one sheet per subject + summary.
 
-(ROI quality check (confirming peak location matches stimulation site) was performed separately — MNI coordinates of peak voxels are available on request.)
+(ROI quality check (confirming peak location matches stimulation site) was performed separately — MNI coordinates of peak voxels are available on request.) 
 
+# Figures
+
+Figures 2 and 4 rely on raw data acquired using **distance_per_position.py** and **distance_26_orientations.py** scripts and instrumentmarker.xml obtained in measurements.
+
+The path to the analysis.xlsx file acquired via **roi_mask_and_analysis.py** should be provided in the scripts for figures 5 and 6.
+
+**figure_2.py** - Coil-to-scalp displacement across 10 EEG positions with biggest displacement (MQ2 device). Boxes: all 8 orientations × 5 subjects (n=40). Dots: per-subject mean.
+
+**figure_4_B.py** - Coil-to-scalp displacement across 8 orientations of F3 position with MetaQuest2 goggles. Boxes: 5 subjects. Dots: individual subjects.
+
+**figure_4_C.py** - Coil-to-scalp displacement across 8 orientations of F3 position with BigscreenBeyond goggles. Boxes: 5 subjects. Dots: individual subjects.
+
+**figure_5_A.py** - Function of the E-field spatial spread (focality) to coil-to-scalp distance. 
+
+**figure_5_B.py** - Function of P98 E-field strength (in ROI) to coil-to-scalp distance. 
+
+**figure_6.py** - Required MSO% scaling factor to restore reference E-field across distances. Vertical lines: BB and MQ2 device distances at F3. Practically implementable MSO% scaling factor labeled as red horizontal line.
 
 ## Important
 
-All scripts require to set paths at the top of each file.
+Scripts require to set paths at the top of each file.
 Raw MRI data and head models are not included. 
 
 
