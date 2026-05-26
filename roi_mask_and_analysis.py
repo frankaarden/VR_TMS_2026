@@ -94,7 +94,8 @@ def analyze_subject(sub):
     gm      = load_gm_mask(m2m_path, ref_nii.affine, ref_nii.shape)
     roi, peak_vox = build_roi(ref_magnE[0], gm)
     print(f"  ROI: {int(np.sum(roi))} GM voxels, peak={peak_vox}")
-
+    nib.save(nib.Nifti1Image(roi.astype(np.float32), ref_nii.affine),
+             str(output_base / "roi_mask.nii.gz"))
     results, ref_params = [], None
     # identifies field values and focality in all simulations
     for d in distances:
